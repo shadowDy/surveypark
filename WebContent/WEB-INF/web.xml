@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>surveypark</display-name>
+	<!-- 通过上下文参数配置Spring 文件的位置 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:beans.xml,classpath:schedules.xml</param-value>
+	</context-param>
+
+	<!-- 上下文载入监听器，确保web服务器启动时，直接完成spring 容器的初始化，将spring 容器放在application中 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- openSessionInViewFilter,该过滤器在view 渲染时始终开启session,一劳永逸的解决hibenate 的懒加载问题，该过滤器必须配置在struts2 
+		过滤器之前，不推荐使用(性能问题) -->
+	<!-- <filter> <filter-name>SpringOpenSessionInViewFilter</filter-name> <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class> 
+		</filter> <filter-mapping> <filter-name>SpringOpenSessionInViewFilter</filter-name> 
+		<url-pattern>/*</url-pattern> </filter-mapping> -->
+
+
+	<filter>
+		<filter-name>action</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>action</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- 配置spring 的远程调用 -->
+	<servlet>
+		<servlet-name>service</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 如果不把配置文件房子web-inf 目录下，而且名字不叫service-servlet.xml时，就如下配置。calsspath后面是配置文件的名字 -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring-remote.xml</param-value>
+		</init-param>
+
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>service</servlet-name>
+		<url-pattern>*.service</url-pattern>
+	</servlet-mapping>
+</web-app>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 任务明细bean -->
+	<bean id="jobDetailFactoryBean"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<!-- 通过任务类指定石英任务 -->
+		<property name="jobClass"
+			value="com.dy.surveypark.scheduler.CreateLogTablesTask"></property>
+		<property name="jobDataMap">
+			<map>
+				<entry key="logService" value-ref="logService"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<!-- 触发器bean: cron 触发器bean,设置石英任务的调度 策略 -->
+	<bean id="cronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetailFactoryBean"></property>
+		<!-- cron表达式 -->
+		<property name="cronExpression">
+			<value>0 02 18 13 * ?</value>
+		</property>
+	</bean>
+
+	<!-- 调度工厂bean : 激活触发器 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+
+	</bean>
+
+</beans>

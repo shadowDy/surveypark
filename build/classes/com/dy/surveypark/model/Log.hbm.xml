@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-11-11 17:54:39 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+	<class name="com.dy.surveypark.model.Log" table="Logs">
+
+		<id name="id" type="java.lang.String">
+			<column name="ID" />
+			<!-- 保证不同表之间主键不会相同 -->
+			<generator class="uuid" />
+		</id>
+		<property name="operator" type="java.lang.String">
+			<column name="OPERATOR" />
+		</property>
+		<property name="operName" type="java.lang.String">
+			<column name="OPERNAME" />
+		</property>
+		<property name="operParams" type="java.lang.String">
+			<column name="OPERPARAMS" />
+		</property>
+		<property name="operResult" type="java.lang.String">
+			<column name="OPERRESULT" />
+		</property>
+		<property name="resultMsg" type="java.lang.String">
+			<column name="RESULTMSG" />
+		</property>
+		<property name="operTime" type="java.util.Date">
+			<column name="OPERTIME" />
+		</property>
+	</class>
+</hibernate-mapping>
